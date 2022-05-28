@@ -38,7 +38,7 @@ export interface AccountPurchase {
      * @type {string}
      * @memberof AccountPurchase
      */
-    'subscriptionId': string;
+    'subscriptionId': string | null;
     /**
      * 
      * @type {PurchaseStatus}
@@ -50,7 +50,13 @@ export interface AccountPurchase {
      * @type {string}
      * @memberof AccountPurchase
      */
-    'createdAt'?: string;
+    'createdAt': string;
+    /**
+     * 
+     * @type {MessagesModel}
+     * @memberof AccountPurchase
+     */
+    'messages': MessagesModel;
 }
 /**
  * 
@@ -91,10 +97,10 @@ export interface ActiveModel {
 export interface ActiveModelLimits {
     /**
      * 
-     * @type {ActiveModelLimitsMessages}
+     * @type {MessagesModel}
      * @memberof ActiveModelLimits
      */
-    'messages': ActiveModelLimitsMessages;
+    'messages': MessagesModel;
     /**
      * 
      * @type {boolean}
@@ -120,37 +126,6 @@ export interface ActiveModelLimits {
      * @memberof ActiveModelLimits
      */
     'allowCustomMarketingMessage': boolean;
-}
-/**
- * 
- * @export
- * @interface ActiveModelLimitsMessages
- */
-export interface ActiveModelLimitsMessages {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ActiveModelLimitsMessages
-     */
-    'unlimited': boolean;
-    /**
-     * maximum messages that can be sent in the current period
-     * @type {number}
-     * @memberof ActiveModelLimitsMessages
-     */
-    'limit': number;
-    /**
-     * messages sent in the period
-     * @type {number}
-     * @memberof ActiveModelLimitsMessages
-     */
-    'sent': number;
-    /**
-     * is chat/message history allowed in the purchased plan
-     * @type {boolean}
-     * @memberof ActiveModelLimitsMessages
-     */
-    'historySyncAllowed'?: boolean;
 }
 /**
  * Purchase/upgrade/downgrade an account. The \"id\" parameter will be used to upgrade/downgrade the account if already purchased
@@ -592,6 +567,37 @@ export enum LimitsModelSeatsTypeEnum {
     Additional = 'additional'
 }
 
+/**
+ * 
+ * @export
+ * @interface MessagesModel
+ */
+export interface MessagesModel {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MessagesModel
+     */
+    'unlimited': boolean;
+    /**
+     * maximum messages that can be sent in the current period
+     * @type {number}
+     * @memberof MessagesModel
+     */
+    'limit': number;
+    /**
+     * messages sent in the period
+     * @type {number}
+     * @memberof MessagesModel
+     */
+    'sent': number;
+    /**
+     * is chat/message history allowed in the purchased plan
+     * @type {boolean}
+     * @memberof MessagesModel
+     */
+    'historySyncAllowed'?: boolean;
+}
 /**
  * 
  * @export
