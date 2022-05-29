@@ -1604,7 +1604,7 @@ export const PurchasesApiAxiosParamCreator = function (configuration?: Configura
 
             // authentication chatdaddy required
             // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "chatdaddy", ["PAYMENTS_READ", "PAYMENTS_UPDATE"], configuration)
+            await setOAuthToObject(localVarHeaderParameter, "chatdaddy", ["PAYMENTS_READ"], configuration)
 
             if (id !== undefined) {
                 localVarQueryParameter['id'] = id;
