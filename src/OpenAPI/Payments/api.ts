@@ -872,6 +872,12 @@ export interface PurchaseDetailsStripe {
      * @memberof PurchaseDetailsStripe
      */
     'subscriptionId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PurchaseDetailsStripe
+     */
+    'subscriptionItemId'?: string;
 }
 /**
  * 
@@ -2169,6 +2175,54 @@ export const StripeApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
+         * Only available for API account subscriptions
+         * @summary Cancel an auto charged product
+         * @param {string} id ID of the purchase to cancel
+         * @param {'account'} type Type of the purchase to cancel
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        autoChargeDelete: async (id: string, type: 'account', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('autoChargeDelete', 'id', id)
+            // verify required parameter 'type' is not null or undefined
+            assertParamExists('autoChargeDelete', 'type', type)
+            const localVarPath = `/auto-charge`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication chatdaddy required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "chatdaddy", ["PAYMENTS_UPDATE"], configuration)
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Create a new billing portal session to manage payment details
          * @param {string} returnUrl 
@@ -2307,6 +2361,18 @@ export const StripeApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Only available for API account subscriptions
+         * @summary Cancel an auto charged product
+         * @param {string} id ID of the purchase to cancel
+         * @param {'account'} type Type of the purchase to cancel
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async autoChargeDelete(id: string, type: 'account', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.autoChargeDelete(id, type, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Create a new billing portal session to manage payment details
          * @param {string} returnUrl 
@@ -2361,6 +2427,17 @@ export const StripeApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.autoCharge(coupon, autoChargeRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Only available for API account subscriptions
+         * @summary Cancel an auto charged product
+         * @param {string} id ID of the purchase to cancel
+         * @param {'account'} type Type of the purchase to cancel
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        autoChargeDelete(id: string, type: 'account', options?: any): AxiosPromise<void> {
+            return localVarFp.autoChargeDelete(id, type, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Create a new billing portal session to manage payment details
          * @param {string} returnUrl 
@@ -2411,6 +2488,19 @@ export class StripeApi extends BaseAPI {
      */
     public autoCharge(coupon?: string, autoChargeRequest?: AutoChargeRequest, options?: AxiosRequestConfig) {
         return StripeApiFp(this.configuration).autoCharge(coupon, autoChargeRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Only available for API account subscriptions
+     * @summary Cancel an auto charged product
+     * @param {string} id ID of the purchase to cancel
+     * @param {'account'} type Type of the purchase to cancel
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StripeApi
+     */
+    public autoChargeDelete(id: string, type: 'account', options?: AxiosRequestConfig) {
+        return StripeApiFp(this.configuration).autoChargeDelete(id, type, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
